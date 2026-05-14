@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Alazar Haile Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/index.css" />
+  <link rel="stylesheet" href="/src/styles/admin.css" />
+</head>
+<body>
+  <!-- Login Gate -->
+  <div id="loginGate" class="login-gate">
+    <div class="login-card">
+      <div class="logo-mark" style="margin:0 auto 20px;">AH</div>
+      <h2>Admin Access</h2>
+      <p>Enter password to manage your portfolio projects.</p>
+      <form id="loginForm">
+        <input type="password" id="adminPassword" placeholder="Password" autocomplete="current-password" />
+        <button type="submit" class="btn btn-primary btn-full"><span>Enter</span></button>
+        <p id="loginError" class="login-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="adminDashboard" class="admin-dashboard" style="display:none;">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <a href="/" class="nav-logo">
+          <span class="logo-mark">AH</span>
+          <span class="logo-text">Admin Panel</span>
+        </a>
+        <div class="admin-header-actions">
+          <a href="/" class="btn btn-secondary">← Back to Site</a>
+          <button id="logoutBtn" class="btn btn-outline">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-container">
+        <div class="admin-section">
+          <div class="admin-section-header">
+            <h2>Projects</h2>
+            <button id="addProjectBtn" class="btn btn-primary"><span>+ Add Project</span></button>
+          </div>
+          <div id="projectsList" class="projects-list"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div id="projectModal" class="modal" style="display:none;">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Add New Project</h3>
+          <button id="closeModal" class="modal-close">✕</button>
+        </div>
+        <form id="projectForm" class="modal-form">
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" id="projTitle" placeholder="e.g. My Awesome App" required />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="projDesc" rows="3" placeholder="Brief project description..." required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Project Type</label>
+              <select id="projType">
+                <option value="code">Code</option>
+                <option value="design">Design</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="projCategory">
+                <option>Web Development</option>
+                <option>Mobile App</option>
+                <option>Full Stack</option>
+                <option>Graphics Design</option>
+                <option>Motion Graphics</option>
+                <option>Print Design</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Device Mockup (Code only)</label>
+              <select id="projDevice">
+                <option value="desktop">Desktop</option>
+                <option value="phone">Phone</option>
+                <option value="desktop-phone">Desktop + Phone</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tech Stack (comma-separated)</label>
+              <input type="text" id="projTech" placeholder="React, Node.js, CSS" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Live URL (optional)</label>
+            <input type="url" id="projUrl" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label>Screenshot URL (optional)</label>
+            <input type="text" id="projScreenshot" placeholder="URL or /path/to/image.jpg" />
+          </div>
+          <input type="hidden" id="projEditId" />
+          <div class="modal-actions">
+            <button type="button" id="cancelModal" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary"><span>Save Project</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/admin.js"></script>
+</body>
+</html>
