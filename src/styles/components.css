@@ -997,6 +997,18 @@
 .physics-pill[data-brand="premiere"] { --color: #9999FF; --rgb: 153, 153, 255; }
 .physics-pill[data-brand="flutter"] { --color: #02569B; --rgb: 2, 86, 155; }
 .physics-pill[data-brand="illustrator"] { --color: #FF9A00; --rgb: 255, 154, 0; }
+.physics-pill[data-brand="nodejs"] { --color: #68A063; --rgb: 104, 160, 99; }
+.physics-pill[data-brand="typescript"] { --color: #3178C6; --rgb: 49, 120, 198; }
+.physics-pill[data-brand="postgresql"] { --color: #336791; --rgb: 51, 103, 145; }
+.physics-pill[data-brand="mongodb"] { --color: #4DB33D; --rgb: 77, 179, 61; }
+.physics-pill[data-brand="vercel"] { --color: #FFFFFF; --rgb: 255, 255, 255; }
+.physics-pill[data-brand="docker"] { --color: #2496ED; --rgb: 36, 150, 237; }
+.physics-pill[data-brand="firebase"] { --color: #FFCA28; --rgb: 255, 202, 40; }
+.physics-pill[data-brand="postman"] { --color: #FF6C37; --rgb: 255, 108, 55; }
+.physics-pill[data-brand="github"] { --color: #E6EDF0; --rgb: 230, 237, 240; }
+.physics-pill[data-brand="trello"] { --color: #0079BF; --rgb: 0, 121, 191; }
+.physics-pill[data-brand="python"] { --color: #3776AB; --rgb: 55, 118, 171; }
+.physics-pill[data-brand="jest"] { --color: #C21325; --rgb: 194, 19, 37; }
 
 .physics-pill.is-active, .physics-pill.is-dragging {
   border-color: var(--color);
