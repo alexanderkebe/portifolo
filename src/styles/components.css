@@ -1009,6 +1009,15 @@
 .physics-pill[data-brand="trello"] { --color: #0079BF; --rgb: 0, 121, 191; }
 .physics-pill[data-brand="python"] { --color: #3776AB; --rgb: 55, 118, 171; }
 .physics-pill[data-brand="jest"] { --color: #C21325; --rgb: 194, 19, 37; }
+.physics-pill[data-brand="youtube"] { --color: #FF0000; --rgb: 255, 0, 0; }
+.physics-pill[data-brand="instagram"] { --color: #E1306C; --rgb: 225, 48, 108; }
+.physics-pill[data-brand="linkedin"] { --color: #0A66C2; --rgb: 10, 102, 194; }
+.physics-pill[data-brand="x"] { --color: #F5F8FA; --rgb: 245, 248, 250; }
+.physics-pill[data-brand="facebook"] { --color: #1877F2; --rgb: 24, 119, 242; }
+.physics-pill[data-brand="tiktok"] { --color: #00F2EA; --rgb: 0, 242, 234; }
+.physics-pill[data-brand="hootsuite"] { --color: #E0AD15; --rgb: 224, 173, 21; }
+.physics-pill[data-brand="buffer"] { --color: #2C4BFF; --rgb: 44, 75, 255; }
+.physics-pill[data-brand="pinterest"] { --color: #BD081C; --rgb: 189, 8, 28; }
 
 .physics-pill.is-active, .physics-pill.is-dragging {
   border-color: var(--color);
