@@ -927,7 +927,7 @@
 .sandbox-controls {
   display: flex;
   gap: 12px;
-  justify-content: flex-end;
+  justify-content: center;
   flex-wrap: wrap;
   z-index: 10;
   margin-bottom: 8px;

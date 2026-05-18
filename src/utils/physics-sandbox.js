@@ -51,6 +51,8 @@ export function initPhysicsSandbox() {
   const rect = container.getBoundingClientRect();
   const width = rect.width || 800;
   const height = rect.height || 450;
+  let currentWidth = width;
+  let currentHeight = height;
 
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -214,8 +216,8 @@ export function initPhysicsSandbox() {
     // In Zero-G, apply a gentle micro-attractor toward center so elements float gracefully and don't drift away completely
     const isZeroG = engine.gravity.y === 0;
     if (isZeroG) {
-      const centerX = width / 2;
-      const centerY = height / 2;
+      const centerX = currentWidth / 2;
+      const centerY = currentHeight / 2;
       trackers.forEach(item => {
         const { body } = item;
         const toCenterX = centerX - body.position.x;
@@ -274,6 +276,9 @@ export function initPhysicsSandbox() {
     const newW = newRect.width;
     const newH = newRect.height;
 
+    currentWidth = newW;
+    currentHeight = newH;
+
     // Rescale Canvas
     canvas.width = newW;
     canvas.height = newH;
@@ -284,12 +289,28 @@ export function initPhysicsSandbox() {
     Body.setPosition(leftWall, { x: -wallThickness / 2, y: newH / 2 });
     Body.setPosition(rightWall, { x: newW + wallThickness / 2, y: newH / 2 });
 
-    // scale width/height reference
-    // Keep bodies within bounds if walls shrink
+    // scale physical shapes to match responsive DOM pill widths/heights
     trackers.forEach(item => {
-      const { body } = item;
-      const posX = Math.max(20, Math.min(newW - 20, body.position.x));
-      const posY = Math.max(20, Math.min(newH - 20, body.position.y));
+      const { body, dom } = item;
+      
+      // Measure actual current DOM sizes
+      const newPillW = dom.offsetWidth || 130;
+      const newPillH = dom.offsetHeight || 42;
+      
+      // Calculate scaling relative to last recorded size
+      const scaleX = newPillW / item.width;
+      const scaleY = newPillH / item.height;
+      
+      // Scale Matter.js body
+      Body.scale(body, scaleX, scaleY);
+      
+      // Update recorded sizing reference
+      item.width = newPillW;
+      item.height = newPillH;
+
+      // Keep bodies within bounds if walls shrink
+      const posX = Math.max(newPillW / 2, Math.min(newW - newPillW / 2, body.position.x));
+      const posY = Math.max(newPillH / 2, Math.min(newH - newPillH / 2, body.position.y));
       Body.setPosition(body, { x: posX, y: posY });
     });
   }
@@ -308,7 +329,7 @@ export function initPhysicsSandbox() {
       const colCount = 4;
       const col = index % colCount;
       const row = Math.floor(index / colCount);
-      const spawnX = (width / (colCount + 1)) * (col + 1) + (Math.random() - 0.5) * 30;
+      const spawnX = (currentWidth / (colCount + 1)) * (col + 1) + (Math.random() - 0.5) * 30;
       const spawnY = 60 + row * 65;
 
       // Teleport body
@@ -340,8 +361,8 @@ export function initPhysicsSandbox() {
   btnBurst.addEventListener('click', () => {
     trackers.forEach(item => {
       const { body } = item;
-      const centerX = width / 2;
-      const centerY = height / 2;
+      const centerX = currentWidth / 2;
+      const centerY = currentHeight / 2;
       
       // Angle vector from center
       const angleVectorX = body.position.x - centerX;

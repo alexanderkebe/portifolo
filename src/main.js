@@ -314,41 +314,43 @@ function initAboutCinematic() {
   const track = document.querySelector('.hz-about__track');
   if (!section || !track) return;
 
-  // Only run horizontal scroll on desktop
-  if (window.innerWidth <= 1024) return;
+  const mm = gsap.matchMedia();
 
-  const panels = track.querySelectorAll('.hz-panel');
+  // Desktop only (screens wider than 1024px)
+  mm.add("(min-width: 1025px)", () => {
+    const panels = track.querySelectorAll('.hz-panel');
 
-  // Horizontal scroll driven by vertical scrolling
-  const scrollTween = gsap.to(track, {
-    x: () => -(track.scrollWidth - window.innerWidth),
-    ease: 'none',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top top',
-      end: () => '+=' + (track.scrollWidth - window.innerWidth),
-      scrub: 1,
-      pin: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true
-    }
-  });
+    // Horizontal scroll driven by vertical scrolling
+    const scrollTween = gsap.to(track, {
+      x: () => -(track.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + (track.scrollWidth - window.innerWidth),
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
 
-  // Per-panel parallax background text only
-  panels.forEach((panel) => {
-    const bgText = panel.querySelector('.hz-panel__bg-text');
-    if (bgText) {
-      gsap.fromTo(bgText, { x: 100 }, {
-        x: -150,
-        scrollTrigger: {
-          trigger: panel,
-          containerAnimation: scrollTween,
-          start: 'left right',
-          end: 'right left',
-          scrub: 1,
-        }
-      });
-    }
+    // Per-panel parallax background text only
+    panels.forEach((panel) => {
+      const bgText = panel.querySelector('.hz-panel__bg-text');
+      if (bgText) {
+        gsap.fromTo(bgText, { x: 100 }, {
+          x: -150,
+          scrollTrigger: {
+            trigger: panel,
+            containerAnimation: scrollTween,
+            start: 'left right',
+            end: 'right left',
+            scrub: 1,
+          }
+        });
+      }
+    });
   });
 }
 
