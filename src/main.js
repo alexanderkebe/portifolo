@@ -218,7 +218,7 @@ function renderEducation() {
   `).join('');
 }
 
-// ── Navbar scroll effect ──
+// ── Navbar scroll effect, sliding mercury pill, and liquid canvas trail ──
 function initNavbar() {
   const nav = document.getElementById('navbar');
   const hamburger = document.getElementById('navHamburger');
@@ -242,6 +242,113 @@ function initNavbar() {
       document.body.style.overflow = '';
     });
   });
+
+  // ── Liquid Mercury sliding pill ──
+  const pill = document.getElementById('navMercuryPill');
+  const navLinksContainer = document.getElementById('navLinks');
+  const links = navLinksContainer.querySelectorAll('.nav-link');
+
+  function updatePillPosition(link, animate = true) {
+    if (!pill || !link) return;
+    const left = link.offsetLeft;
+    const width = link.offsetWidth;
+
+    gsap.to(pill, {
+      left: left,
+      width: width,
+      opacity: 1,
+      scale: 1,
+      duration: animate ? 0.35 : 0,
+      ease: "power3.out"
+    });
+  }
+
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      updatePillPosition(link);
+    });
+  });
+
+  navLinksContainer.addEventListener('mouseleave', () => {
+    // Snap back to current active section link
+    const activeLink = navLinksContainer.querySelector('.nav-link.active');
+    if (activeLink) {
+      updatePillPosition(activeLink);
+    } else {
+      gsap.to(pill, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  });
+
+  // ── Liquid Mercury Canvas Animation ──
+  const canvas = document.getElementById('navbarMercuryCanvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, active: false };
+
+    function resizeCanvas() {
+      const rect = nav.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    nav.addEventListener('mousemove', (e) => {
+      const rect = nav.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+
+      // Spawn liquid mercury balls
+      if (Math.random() < 0.45) {
+        particles.push({
+          x: mouse.x,
+          y: mouse.y,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.2,
+          radius: Math.random() * 12 + 8,
+          alpha: 1,
+          decay: Math.random() * 0.015 + 0.012
+        });
+      }
+    });
+
+    nav.addEventListener('mouseleave', () => {
+      mouse.active = false;
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw white blobs which the CSS blur/contrast filter will merge organically
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius * p.alpha, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
 }
 
 // ── Scroll reveal (Intersection Observer) ──
@@ -290,6 +397,8 @@ function initSmoothScroll() {
 function initActiveNav() {
   const sections = document.querySelectorAll('.section');
   const navLinks = document.querySelectorAll('.nav-link');
+  const pill = document.getElementById('navMercuryPill');
+  const navLinksContainer = document.getElementById('navLinks');
 
   window.addEventListener('scroll', () => {
     let current = '';
@@ -299,12 +408,37 @@ function initActiveNav() {
         current = section.getAttribute('id');
       }
     });
+    
+    let anyActive = false;
     navLinks.forEach(link => {
       link.classList.remove('active');
       if (link.getAttribute('href') === `#${current}`) {
         link.classList.add('active');
+        anyActive = true;
+        
+        // If navbar is not hovered, snap pill to this active item!
+        const isHovered = navLinksContainer.matches(':hover');
+        if (!isHovered && pill) {
+          gsap.to(pill, {
+            left: link.offsetLeft,
+            width: link.offsetWidth,
+            opacity: 1,
+            scale: 1,
+            duration: 0.35,
+            ease: "power3.out"
+          });
+        }
       }
     });
+
+    if (!anyActive && pill && !navLinksContainer.matches(':hover')) {
+      gsap.to(pill, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.35,
+        ease: "power3.out"
+      });
+    }
   });
 }
 
