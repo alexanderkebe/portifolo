@@ -218,6 +218,8 @@ function renderEducation() {
   `).join('');
 }
 
+let navbarHovered = false;
+
 // ── Navbar scroll effect, sliding mercury pill, and liquid canvas trail ──
 function initNavbar() {
   const nav = document.getElementById('navbar');
@@ -269,7 +271,12 @@ function initNavbar() {
     });
   });
 
+  navLinksContainer.addEventListener('mouseenter', () => {
+    navbarHovered = true;
+  });
+
   navLinksContainer.addEventListener('mouseleave', () => {
+    navbarHovered = false;
     // Snap back to current active section link
     const activeLink = navLinksContainer.querySelector('.nav-link.active');
     if (activeLink) {
@@ -282,6 +289,58 @@ function initNavbar() {
         ease: "power2.out"
       });
     }
+  });
+
+  // ── Apple Dock Proximity Magnification ──
+  const dockItems = document.querySelectorAll('.navbar .nav-link, .navbar .nav-logo, .navbar .nav-cta');
+  
+  nav.addEventListener('mousemove', (e) => {
+    if (window.innerWidth <= 768) return; // Disable magnification on mobile viewports
+    
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    dockItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const itemCenterX = rect.left + rect.width / 2;
+      const itemCenterY = rect.top + rect.height / 2;
+      
+      const distance = Math.hypot(mouseX - itemCenterX, mouseY - itemCenterY);
+      
+      if (distance < 130) {
+        const factor = (130 - distance) / 130; // Proximity coefficient (0 to 1)
+        const scale = 1 + factor * 0.15; // Max 1.15x magnification scale
+        const yVal = -factor * 6; // Float up by 6px
+        
+        gsap.to(item, {
+          scale: scale,
+          y: yVal,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+      } else {
+        gsap.to(item, {
+          scale: 1,
+          y: 0,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+      }
+    });
+  });
+
+  nav.addEventListener('mouseleave', () => {
+    dockItems.forEach(item => {
+      gsap.to(item, {
+        scale: 1,
+        y: 0,
+        duration: 0.4,
+        ease: "power3.out",
+        overwrite: "auto"
+      });
+    });
   });
 
   // ── Liquid Mercury Canvas Animation ──
@@ -398,7 +457,6 @@ function initActiveNav() {
   const sections = document.querySelectorAll('.section');
   const navLinks = document.querySelectorAll('.nav-link');
   const pill = document.getElementById('navMercuryPill');
-  const navLinksContainer = document.getElementById('navLinks');
 
   window.addEventListener('scroll', () => {
     let current = '';
@@ -417,8 +475,7 @@ function initActiveNav() {
         anyActive = true;
         
         // If navbar is not hovered, snap pill to this active item!
-        const isHovered = navLinksContainer.matches(':hover');
-        if (!isHovered && pill) {
+        if (!navbarHovered && pill) {
           gsap.to(pill, {
             left: link.offsetLeft,
             width: link.offsetWidth,
@@ -431,7 +488,7 @@ function initActiveNav() {
       }
     });
 
-    if (!anyActive && pill && !navLinksContainer.matches(':hover')) {
+    if (!anyActive && pill && !navbarHovered) {
       gsap.to(pill, {
         opacity: 0,
         scale: 0.9,
@@ -544,7 +601,7 @@ function initCursor() {
   });
 
   // Magnetic Elements
-  const magnetics = document.querySelectorAll('.btn, .social-icon-btn, .nav-link, .nav-cta, .nav-logo');
+  const magnetics = document.querySelectorAll('.btn, .social-icon-btn');
   magnetics.forEach(el => {
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
