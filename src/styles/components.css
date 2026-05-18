@@ -904,3 +904,118 @@
   width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
   animation: status-pulse 2s ease-in-out infinite;
 }
+
+/* ============================================
+   INTERACTIVE TECH SANDBOX (MATTER.JS + DOM)
+   ============================================ */
+.sandbox {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+
+.sandbox-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.sandbox-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  z-index: 10;
+  margin-bottom: 8px;
+}
+
+.physics-sandbox-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: rgba(10, 10, 15, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.physics-sandbox-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto; /* Allow mouse constraint to capture mouse events on canvas */
+  z-index: 2;
+  opacity: 0; /* Keep canvas drawing invisible, we only render the beautiful high-dpi DOM pills */
+}
+
+/* Physics Pills */
+.physics-pill {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 24px;
+  border-radius: 50px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transform-origin: center center;
+  will-change: transform, box-shadow, border-color, background;
+  z-index: 5;
+  pointer-events: none; /* Let drag events fall through to the Matter.js canvas underneath */
+}
+
+.physics-pill svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* Custom glow properties based on official brand colors */
+.physics-pill[data-brand="react"] { --color: #61DAFB; --rgb: 97, 218, 251; }
+.physics-pill[data-brand="angular"] { --color: #DD0031; --rgb: 221, 0, 49; }
+.physics-pill[data-brand="photoshop"] { --color: #31A8FF; --rgb: 49, 168, 255; }
+.physics-pill[data-brand="aftereffects"] { --color: #9999FF; --rgb: 153, 153, 255; }
+.physics-pill[data-brand="figma"] { --color: #F24E1E; --rgb: 242, 78, 30; }
+.physics-pill[data-brand="premiere"] { --color: #9999FF; --rgb: 153, 153, 255; }
+.physics-pill[data-brand="flutter"] { --color: #02569B; --rgb: 2, 86, 155; }
+.physics-pill[data-brand="illustrator"] { --color: #FF9A00; --rgb: 255, 154, 0; }
+
+.physics-pill.is-active, .physics-pill.is-dragging {
+  border-color: var(--color);
+  box-shadow: 0 0 25px rgba(var(--rgb), 0.35), 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: rgba(var(--rgb), 0.08);
+}
+
+@media (max-width: 768px) {
+  .physics-sandbox-container {
+    height: 380px;
+  }
+  .physics-pill {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    gap: 8px;
+  }
+  .physics-pill svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+

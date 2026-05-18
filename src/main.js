@@ -1,5 +1,6 @@
 import { defaultProjects, services, skills, experience, education, certifications } from './data/projects.js';
 import { initBackground } from './utils/background.js';
+import { initPhysicsSandbox } from './utils/physics-sandbox.js';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -500,6 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initActiveNav();
   initHeroStats();
+  initPhysicsSandbox();
 
   // Marquee: set brand colors from data attributes
   document.querySelectorAll('.marquee-item[data-color]').forEach(el => {
