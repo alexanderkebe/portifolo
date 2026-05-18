@@ -63,7 +63,7 @@
   border-radius: var(--radius-pill);
   transition: color 0.3s ease;
 }
-.nav-link:hover { color: #fff; }
+.nav-link:hover, .nav-link.active { color: #fff; }
 
 /* Mercury Sliding Pill */
 .nav-mercury-pill {
