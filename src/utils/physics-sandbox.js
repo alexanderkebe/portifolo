@@ -347,13 +347,13 @@ export function initPhysicsSandbox() {
     if (zeroGActive) {
       engine.gravity.y = 0;
       btnGravity.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M12 2v20M17 5l-5-5-5 5M17 19l-5 5-5-5"/></svg> Gravity: Zero-G`;
-      btnGravity.classList.add('btn-primary');
-      btnGravity.classList.remove('btn-secondary');
+      btnGravity.style.borderColor = 'var(--accent-1)';
+      btnGravity.style.background = 'rgba(96, 165, 250, 0.1)';
     } else {
       engine.gravity.y = 0.9;
       btnGravity.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M12 2v20M17 5l-5-5-5 5M17 19l-5 5-5-5"/></svg> Toggle Zero-G`;
-      btnGravity.classList.remove('btn-primary');
-      btnGravity.classList.add('btn-secondary');
+      btnGravity.style.borderColor = '';
+      btnGravity.style.background = '';
     }
   });
 
