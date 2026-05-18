@@ -385,8 +385,8 @@ function initNavbar() {
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw white blobs which the CSS blur/contrast filter will merge organically
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      // Draw translucent indigo-blue blobs that fit beautifully into the futuristic interface
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.55)';
 
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
